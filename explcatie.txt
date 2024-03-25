@@ -1,0 +1,76 @@
+informatie mai iai de aici: https://realpython.com/get-started-with-django-1/
+
+creezi un mediu de programare pentru proiect:
+py -m venv venv
+
+asta creeaza un folder nou venv
+aici trebuie de rulat scriptul care sa creeze acest mediu de programare:
+.\venv\Scripts\activate
+
+selectezi optiunea A
+
+
+instalezi django:
+pip install django
+
+creezi un proiect scriind in command prompt: 
+django-admin startproject vlada .
+
+
+intri in folderul cu proiect:
+cd vlada
+
+serverul il rulezi folosind comanda:
+python manage.py runserver
+
+deschizi aplicatie in browser pe adresa asta (adresa locala, la computerul tau e 127.0.0.1, iar portul e 8000):
+http://127.0.0.1:8000/
+
+iesi din aplicatie folosind Ctrl+C o data
+
+creeaza o aplicatie noua:
+py manage.py startapp pages
+
+intri in vlada/settings.py si adaugi aplicatia noua aici:
+INSTALLED_APPS = [
+    'pages.apps.PagesConfig', # asta a fost adaugat
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+]
+
+
+
+Cum se creeaza o pagina? Creezi nu view (adica un script care va fi transformat intr-o pagina de catre server).
+Intri in pages/views.py si adauga asta:
+def home(request):
+    return render(request, "pages/home.html", {})
+
+asta specifica o functie care va face render la documentul home.html cand va fi accesat siteul la adresa /
+
+acum trebuie de creat documentul html in pages/templates/pages/home.html si de adaugat in el ce vrei tu deam.
+
+acum trebuie de adaugat o ruta (in django e o functie care primeste o cerere de la client si va rula functia home care am scris-o mai sus):
+intri in vlada/urls.py si trebuie sa ai asta:
+from django.contrib import admin
+from django.urls import path, include
+
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path("", include("pages.urls"))
+]
+
+creezi urls.py in folderul pages si scrii asta acolo:
+from django.urls import path
+from pages import views
+
+urlpatterns = [
+    path("", views.home, name='home'),
+]
+
+
+ruleaza iar serverul cu py manage.py runserver si instr pe localhost:8000 in browser:
